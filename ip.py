@@ -1,3 +1,54 @@
+2 no
+Q2 dhcp configuration
+Press RETURN to get started!
+ 
+Router>en
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname dhcp-server
+dhcp-server(config)#int gig 0/0/0 or int fa 0/0/0
+dhcp-server(config-if)#ip add 192.168.1.1 255.255.255.0
+dhcp-server(config-if)#no sh
+ 
+dhcp-server(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0/0, changed state to up
+ 
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0, changed state to up
+ 
+dhcp-server(config-if)#int gig 0/0/1 or int fa 0/0/1
+dhcp-server(config-if)#ip add 192.168.2.1 255.255.255.0
+dhcp-server(config-if)#no sh
+ 
+dhcp-server(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0/1, changed state to up
+ 
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to up
+ 
+dhcp-server(config-if)#do sh ip int br
+Interface              IP-Address      OK? Method Status                Protocol 
+GigabitEthernet0/0/0   192.168.1.1     YES manual up                    up 
+GigabitEthernet0/0/1   192.168.2.1     YES manual up                    up 
+GigabitEthernet0/0/2   unassigned      YES unset  administratively down down 
+Vlan1                  unassigned      YES unset  administratively down down
+dhcp-server(config-if)#
+ 
+dhcp-server(dhcp-config)#ip dhcp excluded-address 192.168.1.1
+dhcp-server(config)#ip dhcp excluded-address 192.168.2.1
+dhcp-server(config)#ip dhcp pool p1
+dhcp-server(dhcp-config)#network 192.168.1.0 255.255.255.0
+dhcp-server(dhcp-config)#default-router 192.168.1.1
+dhcp-server(dhcp-config)#dns-server 8.8.8.8
+dhcp-server(dhcp-config)#exit
+dhcp-server(config)#
+dhcp-server(config)#ip dhcp pool p2
+dhcp-server(dhcp-config)#network 192.168.2.0 255.255.255.0
+dhcp-server(dhcp-config)#default-router 192.168.2.1
+dhcp-server(dhcp-config)#dns-server 8.8.8.8
+dhcp-server(dhcp-config)#
+dhcp-server#
+%SYS-5-CONFIG_I: Configured from console by console
+
+
 3 no
 
 router-1
